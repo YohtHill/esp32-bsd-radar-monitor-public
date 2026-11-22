@@ -55,6 +55,15 @@ The original front photo shows the installed displays, ESP32 and radar. The OLED
 
 The report and defense show the prototype's functional data path. They do not establish maximum detection range, calibrated accuracy or a long-run false-alarm rate. Late SPI display rework damaged the controller. The original assembly could not continue testing and the electrical root cause was not isolated. Start the next revision with removable peripherals and current-limited supply branches, then add serial replay and measured-distance tests. Use those data to tune the thresholds and controls. [Test matrix and improvement order](docs/reproduce-and-test.md)
 
+## Build and test coverage
+
+| Component | Reproducible configuration |
+| --- | --- |
+| ESP32 firmware | PlatformIO Core 6.1.19 and Espressif32 platform 6.13.0. This project targets the `esp32dev` environment. Library versions are pinned in [platformio.ini](platformio.ini). |
+| Android debug app | JDK 17, Android SDK Platform 35, Gradle 8.7 and Android Gradle Plugin 8.6.1. See [Android setup](android_app/README.md). |
+
+[GitHub Actions](https://github.com/YohtHill/esp32-bsd-radar-monitor-public/actions/workflows/build.yml) builds both targets. The [bench matrix](docs/reproduce-and-test.md) covers the hardware checks, including UART receipt, OLED output, vibration and Bluetooth. Measured range error, end-to-end warning latency and false-alarm rates still require controlled trials.
+
 ## Quick build
 
 Check the [wiring and supplies](docs/hardware-wiring.md). The ESP32 firmware uses Arduino with PlatformIO. Pair the Android phone with `ESP32_BSD_MONITOR` over Bluetooth Classic. APK installation and stepwise board testing are in the [Android build guide](android_app/README.md) and [bench guide](docs/reproduce-and-test.md).

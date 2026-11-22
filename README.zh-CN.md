@@ -55,6 +55,15 @@ V1 将 ESP32-WROOM DevKit、MS60 雷达、0.96 英寸 SSD1306 OLED、1.54 英寸
 
 课程报告和答辩记录支持这是一套能跑通数据链路的原型。截图和一次串口帧无法证明探测距离上限、测量精度或长期误报率。课程后期返修 SPI 彩屏时出现电路异常并损坏主控，原样机此后无法继续测试，故障源未做电气定因。后续优先做可插拔、可分路限流的 V2，再补可复现的串口回放和定距测试，最后根据数据调整预警阈值与交互。[查看验证矩阵和改进顺序](docs/reproduce-and-test.zh-CN.md)
 
+## 构建配置与验证范围
+
+| 组件 | 可复现配置 |
+| --- | --- |
+| ESP32 固件 | PlatformIO Core 6.1.19、Espressif32 平台 6.13.0，目标环境 `esp32dev`。依赖版本固定在 [platformio.ini](platformio.ini)。 |
+| 安卓调试应用 | JDK 17、Android SDK Platform 35、Gradle 8.7 和 Android Gradle Plugin 8.6.1。参见[安卓构建说明](android_app/README.zh-CN.md)。 |
+
+[GitHub Actions](https://github.com/YohtHill/esp32-bsd-radar-monitor-public/actions/workflows/build.yml) 自动构建两个目标。[台架验证矩阵](docs/reproduce-and-test.zh-CN.md)用于验证串口、OLED、振动传感器和蓝牙。测距误差、端到端预警延迟和误报率仍需受控实测。
+
 ## 快速构建
 
 先核对[接线和电源](docs/hardware-wiring.zh-CN.md)。ESP32 固件使用 Arduino 与 PlatformIO。经典蓝牙 SPP 客户端应配对 `ESP32_BSD_MONITOR`。如需逐项上电、排查串口或安装 APK，参照[台架复现](docs/reproduce-and-test.zh-CN.md)与[安卓构建](android_app/README.zh-CN.md)。
