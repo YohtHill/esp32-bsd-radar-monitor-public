@@ -8,7 +8,7 @@
 
 ![由原始实物、OLED 与安卓画面组成的演示](demo/demo.zh-CN.gif)
 
-[逐帧看演示](demo/README.zh-CN.md) · [下载可编辑 PCB 和制造包](hardware/README.zh-CN.md) · [固件设计](docs/design.zh-CN.md) · [逐字节读协议](docs/radar-protocol.zh-CN.md) · [测试与后续改进](docs/reproduce-and-test.zh-CN.md)
+[最小复现](#最小复现) · [逐帧看演示](demo/README.zh-CN.md) · [下载可编辑 PCB 和制造包](hardware/README.zh-CN.md) · [固件设计](docs/design.zh-CN.md) · [逐字节读协议](docs/radar-protocol.zh-CN.md) · [测试与后续改进](docs/reproduce-and-test.zh-CN.md)
 
 ## 为什么做这套系统
 
@@ -55,21 +55,33 @@ V1 将 ESP32-WROOM DevKit、MS60 雷达、0.96 英寸 SSD1306 OLED、1.54 英寸
 
 课程报告和答辩记录支持这是一套能跑通数据链路的原型。截图和一次串口帧无法证明探测距离上限、测量精度或长期误报率。课程后期返修 SPI 彩屏时出现电路异常并损坏主控，原样机此后无法继续测试，故障源未做电气定因。后续优先做可插拔、可分路限流的 V2，再补可复现的串口回放和定距测试，最后根据数据调整预警阈值与交互。[查看验证矩阵和改进顺序](docs/reproduce-and-test.zh-CN.md)
 
-## 构建配置与验证范围
+## 最小复现
 
-| 组件 | 可复现配置 |
+| 项目 | 所需或已验证配置 |
 | --- | --- |
-| ESP32 固件 | PlatformIO Core 6.1.19、Espressif32 平台 6.13.0，目标环境 `esp32dev`。依赖版本固定在 [platformio.ini](platformio.ini)。 |
-| 安卓调试应用 | JDK 17、Android SDK Platform 35、Gradle 8.7 和 Android Gradle Plugin 8.6.1。参见[安卓构建说明](android_app/README.zh-CN.md)。 |
+| 硬件 | ESP32-WROOM-32 DevKit、MS60-1211S80M-BSD 雷达、3.3 V SSD1306 I²C OLED、USB 数据线与匹配的供电。蜂鸣器、YL-99、ST7789 和安卓手机用于扩展验证。 |
+| 硬件版本 | 课设照片和读数来自已焊接的 **V1 双层载板**。公开版 PCB/Gerber 的铜层、阻焊与钻孔均保留 V1 数据，个人丝印已去除。 |
+| 固件 | PlatformIO Core 6.1.19、Espressif32 6.13.0、Arduino，目标为 `esp32dev`。库版本见 [platformio.ini](platformio.ini)。 |
+| 安卓 | JDK 17、Android SDK 35、Gradle 8.7、AGP 8.6.1。ESP32 必须支持经典蓝牙 SPP。 |
+| 可复现源码基线 | [d85f341](https://github.com/YohtHill/esp32-bsd-radar-monitor-public/tree/d85f341030313134933a54d3fb5ad6238b598857) 的 ESP32 与安卓均通过 [GitHub Actions](https://github.com/YohtHill/esp32-bsd-radar-monitor-public/actions/runs/45001575628)。这是软件构建验证。 |
 
-[GitHub Actions](https://github.com/YohtHill/esp32-bsd-radar-monitor-public/actions/workflows/build.yml) 自动构建两个目标。[台架验证矩阵](docs/reproduce-and-test.zh-CN.md)用于验证串口、OLED、振动传感器和蓝牙。测距误差、端到端预警延迟和误报率仍需受控实测。
-
-## 快速构建
-
-先核对[接线和电源](docs/hardware-wiring.zh-CN.md)。ESP32 固件使用 Arduino 与 PlatformIO。经典蓝牙 SPP 客户端应配对 `ESP32_BSD_MONITOR`。如需逐项上电、排查串口或安装 APK，参照[台架复现](docs/reproduce-and-test.zh-CN.md)与[安卓构建](android_app/README.zh-CN.md)。
+1. **断电接线。** 雷达 TX → GPIO16，雷达 RX → GPIO17。OLED SDA → GPIO21，SCL → GPIO22。V1 载板用 3.3 V 给这两个模块供电。各模块共地，按[原理图和引脚表](docs/hardware-wiring.zh-CN.md)确认供电及串口电平。用 V1 板时先核对 UART 手工跳线。
+2. **构建和烧录。** 用 `python -m pip install platformio==6.1.19` 安装 PlatformIO Core，也可使用 PlatformIO IDE 的终端。在仓库根目录执行下方命令。若有多个串口，用 `pio device list` 找到板卡，再给烧录命令加 `--upload-port <port>`。
+3. **检查最小输出。** USB 日志应出现 `Radar UART: 921600 8N1, RX=16, TX=17`。将雷达朝向开阔区域并移动单个目标，查看 `REPORT RX type=0x07` 和解码的距离、角度、速度，同时对照 OLED。仅有 `LINK` 或蓝牙启动提示时，优先查雷达电源、交叉接线与有效 BSD 帧。
+4. **扩展到手机。** 按[安卓安装与配对](android_app/README.zh-CN.md)构建 APK，在系统蓝牙设置中与 `ESP32_BSD_MONITOR` 配对后，从 App 连接。完整测试矩阵包括振动触发、误报确认、复位与掉线。[台架复现](docs/reproduce-and-test.zh-CN.md)
 
 ~~~sh
-pio run
-pio run -t upload
+pio run -e esp32dev
+pio run -e esp32dev -t upload
 pio device monitor -b 115200
 ~~~
+
+## 指标与已验证范围
+
+| 指标 | 已知证据 |
+| --- | --- |
+| 距离 | 串口曾上报 2.00 m，另有 OLED 约 8 m、10 m 的双目标画面。这些是历史读数。原型可探测距离上限与对照误差尚未实测。 |
+| 刷新 | 模块手册列出 100 ms 刷新。固件 OLED 与蓝牙各有 250 ms 定时更新，SPI 彩屏按 1000 ms 刷新，部分事件会立即更新。端到端预警延迟仍待测。 |
+| 场景 | V1 有上电、串口解析及双目标记录。报告记有近场反射及安装角影响，暂无长期道路误报或漏报统计。 |
+
+源码在 [src/](src/)，安卓客户端在 [android_app/](android_app/)，原理图与 PCB 在 [hardware/](hardware/)，实物及 UI 素材在 [demo/](demo/)，测试清单与协议分析在 [docs/](docs/)。

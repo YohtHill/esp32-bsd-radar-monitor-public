@@ -8,7 +8,7 @@ This project builds a **rear blind-spot warning prototype for bicycles and e-bik
 
 ![Demonstration assembled from original board, OLED and Android captures](demo/demo.gif)
 
-[Demo walkthrough](demo/README.md) · [Editable PCB and manufacturing files](hardware/README.md) · [Firmware design](docs/design.md) · [Protocol byte by byte](docs/radar-protocol.md) · [Testing and improvements](docs/reproduce-and-test.md)
+[Minimal reproduction](#minimal-reproduction) · [Demo walkthrough](demo/README.md) · [Editable PCB and manufacturing files](hardware/README.md) · [Firmware design](docs/design.md) · [Protocol byte by byte](docs/radar-protocol.md) · [Testing and improvements](docs/reproduce-and-test.md)
 
 ## Why the team built it
 
@@ -55,21 +55,33 @@ The original front photo shows the installed displays, ESP32 and radar. The OLED
 
 The report and defense show the prototype's functional data path. They do not establish maximum detection range, calibrated accuracy or a long-run false-alarm rate. Late SPI display rework damaged the controller. The original assembly could not continue testing and the electrical root cause was not isolated. Start the next revision with removable peripherals and current-limited supply branches, then add serial replay and measured-distance tests. Use those data to tune the thresholds and controls. [Test matrix and improvement order](docs/reproduce-and-test.md)
 
-## Build and test coverage
+## Minimal reproduction
 
-| Component | Reproducible configuration |
+| Item | Required or verified configuration |
 | --- | --- |
-| ESP32 firmware | PlatformIO Core 6.1.19 and Espressif32 platform 6.13.0. This project targets the `esp32dev` environment. Library versions are pinned in [platformio.ini](platformio.ini). |
-| Android debug app | JDK 17, Android SDK Platform 35, Gradle 8.7 and Android Gradle Plugin 8.6.1. See [Android setup](android_app/README.md). |
+| Hardware | ESP32-WROOM-32 DevKit, MS60-1211S80M-BSD radar, 3.3 V SSD1306 I²C OLED, USB data cable and the correct supply. Buzzer, YL-99, ST7789 and an Android phone extend the test. |
+| Hardware revision | The coursework photos and readings come from the soldered **V1 two-layer carrier**. The public PCB and Gerbers retain the V1 copper, mask and drill data with personal silkscreen removed. |
+| Firmware | PlatformIO Core 6.1.19, Espressif32 6.13.0, Arduino, target `esp32dev`. [Pinned libraries](platformio.ini) |
+| Android | JDK 17, Android SDK 35, Gradle 8.7 and AGP 8.6.1. The ESP32 must support Bluetooth Classic SPP. |
+| Reproducible source baseline | Both binaries built at [d85f341](https://github.com/YohtHill/esp32-bsd-radar-monitor-public/tree/d85f341030313134933a54d3fb5ad6238b598857). [GitHub Actions](https://github.com/YohtHill/esp32-bsd-radar-monitor-public/actions/runs/45001575628) |
 
-[GitHub Actions](https://github.com/YohtHill/esp32-bsd-radar-monitor-public/actions/workflows/build.yml) builds both targets. The [bench matrix](docs/reproduce-and-test.md) covers the hardware checks, including UART receipt, OLED output, vibration and Bluetooth. Measured range error, end-to-end warning latency and false-alarm rates still require controlled trials.
-
-## Quick build
-
-Check the [wiring and supplies](docs/hardware-wiring.md). The ESP32 firmware uses Arduino with PlatformIO. Pair the Android phone with `ESP32_BSD_MONITOR` over Bluetooth Classic. APK installation and stepwise board testing are in the [Android build guide](android_app/README.md) and [bench guide](docs/reproduce-and-test.md).
+1. **Wire with power off.** Connect radar TX to GPIO16 and RX to GPIO17. Connect OLED SDA to GPIO21 and SCL to GPIO22. The V1 carrier powers both modules from 3.3 V. Share ground and check supply and UART levels against the [schematic and pin map](docs/hardware-wiring.md). Check the hand-wired UART jumpers if using the V1 carrier.
+2. **Build and flash.** Install PlatformIO Core 6.1.19 with `python -m pip install platformio==6.1.19` or use the PlatformIO IDE terminal. Run the commands below from the repository root. If several serial devices are attached, use `pio device list` and supply `--upload-port <port>` to the upload command.
+3. **Check the minimum output.** The USB monitor should show `Radar UART: 921600 8N1, RX=16, TX=17`. Move one target in front of the radar in an open area. Look for `REPORT RX type=0x07`, the decoded range, bearing and speed, and the corresponding OLED output. Link status or Bluetooth startup alone does not verify that target data reached the parser.
+4. **Connect the phone.** Build with the [Android pairing guide](android_app/README.md), pair with `ESP32_BSD_MONITOR` in system settings and connect in the app. Use the [bench matrix](docs/reproduce-and-test.md) to exercise impact, false-alarm handling, reset and disconnect.
 
 ~~~sh
-pio run
-pio run -t upload
+pio run -e esp32dev
+pio run -e esp32dev -t upload
 pio device monitor -b 115200
 ~~~
+
+## Measurements and validation scope
+
+| Metric | Evidence |
+| --- | --- |
+| Range | One archived UART report reads 2.00 m. A different OLED capture shows two targets near 8 m and 10 m. Maximum detection distance and errors against a reference remain unmeasured. |
+| Updates | The module manual lists 100 ms. Firmware schedules OLED and Bluetooth updates at 250 ms and TFT refresh at 1000 ms, with some immediate events. End-to-end latency remains unmeasured. |
+| Conditions | V1 records include power-on, UART decoding and two-target display. Near-field reflections and mounting angle affected the prototype. There is no long-duration false-alarm or missed-detection dataset. |
+
+The repository keeps firmware in [src/](src/), the client in [android_app/](android_app/), PCB design in [hardware/](hardware/), photos and app captures in [demo/](demo/), and the bench checklist and protocol in [docs/](docs/).
