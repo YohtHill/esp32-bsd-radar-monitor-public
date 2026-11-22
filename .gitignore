@@ -1,0 +1,11 @@
+.pio/
+.vscode/
+.idea/
+.gradle/
+build/
+build-manual/
+local.properties
+*.apk
+*.aab
+*.jks
+*.keystore
