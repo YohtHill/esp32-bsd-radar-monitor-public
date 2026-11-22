@@ -6,7 +6,7 @@
 
 | 证据 | 观察到的现象 | 验证范围 |
 | --- | --- | --- |
-| [V1 实物](../demo/assets/assembled-back.jpg) | 背面照片显示完成焊接的载板。 | 双层载板已打板装配。 |
+| [V1 实物正面](../demo/assets/assembled-front-redacted.png)和[背面](../demo/assets/assembled-back.jpg) | 正面实拍中 OLED 已上电并显示无目标，背面可见载板焊点。 | 双层板已打板和装配，并留有一次无目标的上电画面。 |
 | 答辩第 9 页原始串口帧 | `5A 09 07 01 00 00 00 02 37 00 00 A4`。解码为右侧 2.00 米、0.00 米/秒、+55°，ID 0。 | 一次合法串口帧及解码结果。 |
 | [OLED 双目标](../demo/assets/oled-two-targets.jpg) | 左侧约 8 米、中间约 10 米，两者显示约 −2 米/秒。 | OLED 的目标数和多目标显示。 |
 | [安卓预警](../demo/assets/android-warning.jpg) | 另一场景同时出现中间 4 米与左侧 10 米两个目标。左侧达到 4/5 级。 | 蓝牙链路到分区、目标列表和风险显示。 |

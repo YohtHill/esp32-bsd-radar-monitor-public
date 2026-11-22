@@ -8,7 +8,7 @@
 
 | 素材 | 画面内容 |
 | --- | --- |
-| [原型实物背面](assets/assembled-back.jpg) | 原始照片可见载板焊点。[顶层布线图](assets/pcb-layout.png)标明主控、两块屏和传感器在板上的位置。 |
+| [原型实物正面](assets/assembled-front-redacted.png)和[背面](assets/assembled-back.jpg) | 正面实拍显示 OLED 已上电且无目标，背面记录了手工焊接的焊点。 |
 | [OLED 截图](assets/oled-two-targets.jpg) | 同时显示约 8 米和 10 米的两个目标，两者显示速度均约为 −2 米/秒。 |
 | [安卓预警截图](assets/android-warning.jpg) | 目标列表包含两条风险记录。左侧目标为 10.00 米、−7.2 千米/小时、−16°，风险 4/5；中间目标为 4.00 米、−3.6 千米/小时、3°，风险 2/5。 |
 

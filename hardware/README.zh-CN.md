@@ -11,7 +11,7 @@ V1 原型是一块已打板的双层载板，按 Gerber 外形计算，尺寸约
 | [嘉立创 EDA 专业版工程](esp32-bsd-monitor-v1.epro2) | 下载后通过专业版工程导入入口打开，可编辑原理图与 PCB。 |
 | [Gerber 和钻孔包](esp32-bsd-monitor-v1-gerbers.zip) | 基于 2026-06-07 原始导出的脱敏制造包，含双面铜层、阻焊、丝印、板框、金属化孔、非金属化孔和过孔钻孔文件。 |
 | [参考原理图](../docs/reference-schematic.png) | 无需打开 EDA 即可查看电源路径和接口标识。 |
-| [顶层布线渲染图](../demo/assets/pcb-layout.png)和[原始实物背面](../demo/assets/assembled-back.jpg) | 查看布局和手工焊接连接。 |
+| [顶层布线渲染图](../demo/assets/pcb-layout.png)、[实物正面](../demo/assets/assembled-front-redacted.png)和[实物背面](../demo/assets/assembled-back.jpg) | 对照布局，查看实物元件、焊点和手工跳线。 |
 
 公开版在可编辑 PCB、内嵌预览和顶层丝印 Gerber 中移除了两行个人标识。双面铜层、阻焊、板框和钻孔与原始导出逐字节一致。ZIP 保留打板所用层，EDA 工程已核对压缩包结构。报告记录了雷达串口的手工跳线。装配新板时，对照[引脚表](../docs/hardware-wiring.zh-CN.md)检查雷达 TX 到 GPIO16、雷达 RX 到 GPIO17 的导通。本次已渲染并检查 Gerber。本公开版尚未在嘉立创 EDA 中重新导出或执行 DRC。
 

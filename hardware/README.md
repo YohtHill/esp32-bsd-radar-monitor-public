@@ -11,7 +11,7 @@ The fabricated V1 prototype is a two-layer carrier with an outline of approximat
 | [EasyEDA Pro archive](esp32-bsd-monitor-v1.epro2) | Edit the schematic and PCB in EasyEDA Pro. Download the archive and import it through the Professional Edition import entry. |
 | [Gerber and drills](esp32-bsd-monitor-v1-gerbers.zip) | Fabrication layers derived from the 2026-06-07 export. Includes both copper layers, mask, silkscreen, outline, PTH, NPTH and via drill files. |
 | [Schematic reference](../docs/reference-schematic.png) | Read the power path and interface labels without the editor. |
-| [Top-side render](../demo/assets/pcb-layout.png) and [original rear photo](../demo/assets/assembled-back.jpg) | Inspect the layout and hand-soldered connections. |
+| [Top-side render](../demo/assets/pcb-layout.png), [front photo](../demo/assets/assembled-front-redacted.png) and [rear photo](../demo/assets/assembled-back.jpg) | Compare the layout with the installed parts, solder joints and manual jumpers. |
 
 In this public edition, the two personal markings were removed from the editable PCB, its embedded preview and the top-silkscreen Gerber. The copper, solder mask, outline and drill layers match the original bytes. The ZIP includes fabrication layers. The source archive was checked structurally. The report records manual jumpers on the radar UART path. When populating a new board, check continuity from radar TX to ESP32 GPIO16 and from radar RX to GPIO17 against the [pin map](../docs/hardware-wiring.md). The Gerber ZIP was rendered and inspected. The modified source has not been re-exported from EasyEDA Pro or re-run through DRC.
 

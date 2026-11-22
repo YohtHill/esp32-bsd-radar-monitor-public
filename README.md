@@ -30,12 +30,18 @@ flowchart LR
 
 The V1 two-layer carrier is approximately 121 × 80 mm. It mounts an ESP32-WROOM DevKit, MS60 radar, 0.96-inch SSD1306 OLED, 1.54-inch ST7789 TFT, YL-99 vibration module and an active-low buzzer. A 5 V input feeds DevKit VIN. The carrier uses the DevKit's 3.3 V supply for the corresponding peripherals. The OLED uses I²C for a quick numerical view. The TFT uses SPI for more detailed zones and state. Radar UART and the vibration GPIO can be brought up separately.
 
-<img src="demo/assets/pcb-layout.png" alt="Public top-side PCB render, with displays on the left and ESP32 in the middle" width="680">
+### Soldered prototype photos
+
+| Front, powered on | Rear, solder joints and jumpers |
+| --- | --- |
+| [![Front photo of the powered soldered prototype](demo/assets/assembled-front-redacted.png)](demo/assets/assembled-front-redacted.png) | [![Rear photo showing the solder joints and manual connections](demo/assets/assembled-back.jpg)](demo/assets/assembled-back.jpg) |
+
+The original front photo shows the installed displays, ESP32 and radar. The OLED reads **No radar targets**. The rear photo shows the solder joints. Two lines of personal silkscreen are covered in the front photo. [Compare with the PCB layout render](demo/assets/pcb-layout.png).
 
 | Material | What it covers |
 | --- | --- |
 | [EasyEDA Pro project](hardware/esp32-bsd-monitor-v1.epro2) · [Gerber and drill ZIP](hardware/esp32-bsd-monitor-v1-gerbers.zip) | Editable design and fabrication layers with personal markings removed |
-| [Schematic and wiring](docs/hardware-wiring.md) · [PCB layout and rear photo](hardware/README.md) | Supply, crossed UART signals, manual jumpers and TFT backlight |
+| [Schematic and wiring](docs/hardware-wiring.md) · [PCB layout and assembled photos](hardware/README.md) | Supply, crossed UART signals, manual jumpers and TFT backlight |
 | [PlatformIO firmware](src/main.cpp) · [Android build and pairing](android_app/README.md) | Flash the board and connect the client |
 
 ## From a radar frame to a warning

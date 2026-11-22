@@ -6,7 +6,7 @@
 
 | Evidence | Observation | What it verifies |
 | --- | --- | --- |
-| [V1 hardware](../demo/assets/assembled-back.jpg) | The rear view shows the soldered carrier. | Physical fabrication and assembly. |
+| [V1 hardware front](../demo/assets/assembled-front-redacted.png) and [rear](../demo/assets/assembled-back.jpg) | The OLED is on and shows no target in the front photo. The rear view shows the soldered carrier. | Physical fabrication, assembly and one archived idle display. |
 | Original UART frame on Slide 9 | `5A 09 07 01 00 00 00 02 37 00 00 A4` decoded as 2.00 m, 0.00 m/s, +55°, ID 0, right zone. | One checksum-valid report and its firmware decode. |
 | [OLED with two targets](../demo/assets/oled-two-targets.jpg) | Approximately 8 m on the left and 10 m in the centre, both shown near −2 m/s. | The local count and multi-target display. |
 | [Android warning](../demo/assets/android-warning.jpg) | In another scene, 4 m in the centre and 10 m on the left. The left target reaches 4/5. | Bluetooth delivery to the sector view, target table and warning indicator. |

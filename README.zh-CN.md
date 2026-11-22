@@ -30,12 +30,18 @@ flowchart LR
 
 V1 将 ESP32-WROOM DevKit、MS60 雷达、0.96 英寸 SSD1306 OLED、1.54 英寸 ST7789、YL-99 和低电平触发蜂鸣器集成在约 121 × 80 毫米的双层载板上。5 V 输入接开发板 VIN，板上用 3.3 V 给相应外设供电。OLED 走 I²C，用于快速看目标和状态。彩屏走 SPI，用于显示更丰富的分区与状态信息。雷达串口和机械触发分别用 UART2 和数字 GPIO，便于逐个通电和排查。
 
-<img src="demo/assets/pcb-layout.png" alt="脱敏后的载板顶层预览，显示区域在左侧，ESP32 居中" width="680">
+### 焊接完成的实物照片
+
+| 正面上电实拍 | 背面焊点与跳线 |
+| --- | --- |
+| [![焊接完成并上电的载板正面实物](demo/assets/assembled-front-redacted.png)](demo/assets/assembled-front-redacted.png) | [![载板背面的实际焊点和手工连线](demo/assets/assembled-back.jpg)](demo/assets/assembled-back.jpg) |
+
+正面原图可见焊接后安装的显示屏、ESP32 和雷达，OLED 显示 **No radar targets**（当前无目标）。背面可查看实际焊点。正面照片仅遮盖了两行个人丝印。[与 PCB 布线渲染图对照](demo/assets/pcb-layout.png)。
 
 | 资料 | 用途 |
 | --- | --- |
 | [嘉立创 EDA 专业版工程](hardware/esp32-bsd-monitor-v1.epro2) · [Gerber 与钻孔包](hardware/esp32-bsd-monitor-v1-gerbers.zip) | 可编辑工程及脱敏后的制造输出 |
-| [原理图和接线](docs/hardware-wiring.zh-CN.md) · [PCB 布线与实物背面](hardware/README.zh-CN.md) | 核对供电、雷达 TX/RX 交叉接线、手工跳线及彩屏背光 |
+| [原理图和接线](docs/hardware-wiring.zh-CN.md) · [PCB 布线与实物照片](hardware/README.zh-CN.md) | 核对供电、雷达 TX/RX 交叉接线、手工跳线及彩屏背光 |
 | [PlatformIO 固件](src/main.cpp) · [安卓构建与配对](android_app/README.zh-CN.md) | 烧录 ESP32 和连接安卓客户端 |
 
 ## 一帧目标怎样变成预警
